@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#BFA982" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#24201B" media="(prefers-color-scheme: dark)">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Novice Code">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-192.png">
+<title>Novice Code</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#BFA982;--tag:#ECE4D3;--ink:#221F1A;--muted:#5E5444;--line:rgba(34,31,26,.2);--chip:#D3C2A0;--on:#221F1A;--on-ink:#ECE4D3;--shade:rgba(34,31,26,.08);
+  color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root{--bg:#24201B;--tag:#332D25;--ink:#EDE3D0;--muted:#B3A68D;--line:rgba(237,227,208,.16);--chip:#3A342B;--on:#EDE3D0;--on-ink:#24201B;--shade:rgba(0,0,0,.25);color-scheme:dark}}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 7rem)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Archivo",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;line-height:1.45;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:20;background:var(--bg)}
+a{color:inherit}
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:10;background:var(--bg);border-bottom:1px solid var(--line)}
+.top-in{max-width:68rem;margin:0 auto;padding:.7rem 1rem .5rem;display:grid;grid-template-columns:1fr auto;gap:.3rem .8rem;align-items:center}
+.brand{font-variation-settings:"wdth" 125;font-weight:800;font-size:.92rem;letter-spacing:.02em;margin:0}
+.cond{font-size:.82rem;color:var(--muted);text-align:right;margin:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+nav{grid-column:1/-1;display:flex;gap:.25rem;overflow-x:auto;scrollbar-width:none}
+nav a{flex:none;text-decoration:none;font-size:.9rem;font-weight:600;padding:.35rem .8rem;border-radius:999px}
+nav a[aria-current="page"]{background:var(--on);color:var(--on-ink)}
+main{max-width:68rem;margin:0 auto;padding:0 1rem 5rem}
+.view[hidden]{display:none}
+h1{font-variation-settings:"wdth" 62;font-weight:800;font-size:clamp(2.4rem,9vw,4rem);line-height:.92;margin:1.3rem 0 .4rem}
+h2{font-variation-settings:"wdth" 110;font-weight:800;font-size:1.15rem;margin:0}
+.lede{color:var(--muted);font-size:.93rem;margin:0 0 1rem;max-width:62ch}
+.dash{display:grid;gap:1.6rem;margin-top:1.4rem}
+@media (min-width:900px){.dash{grid-template-columns:22rem 1fr;align-items:start}.rail{position:sticky;top:calc(env(safe-area-inset-top,0px) + 6.5rem)}}
+.tag{background:var(--tag);border-radius:4px 4px 22px 4px;padding:1.1rem;position:relative}
+.tag::before{content:"";position:absolute;top:14px;right:16px;width:12px;height:12px;border-radius:50%;background:var(--bg);box-shadow:inset 0 1px 2px rgba(0,0,0,.25)}
+.strip{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-top:1.5rem}
+.strip i{display:block;aspect-ratio:3/4;border-radius:3px;transition:background-color .45s ease}
+.strip-l{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-top:.35rem;font-size:.7rem;color:var(--muted);line-height:1.2}
+.strip-l b{display:block;color:var(--ink);font-size:.76rem}
+.code-t{font-variation-settings:"wdth" 75;font-weight:800;font-size:1.7rem;line-height:1.05;margin:1rem 0 .3rem}
+.code-r{font-size:.93rem;margin:0}
+.dev-line{font-size:.8rem;color:var(--muted);margin:.5rem 0 0;word-break:break-word}
+.opts{display:grid;gap:.45rem;margin-top:1rem}
+.opt{display:grid;grid-template-columns:auto 1fr;gap:.7rem;align-items:center;text-align:left;font:inherit;color:var(--ink);background:transparent;border:1.5px solid var(--line);border-radius:4px 4px 12px 4px;padding:.55rem .65rem;cursor:pointer}
+.opt[aria-pressed="true"]{background:var(--tag);border-color:var(--ink)}
+.mini{display:flex;gap:3px}
+.mini i{display:block;width:14px;height:24px;border-radius:2px}
+.opt b{display:block;font-weight:700;font-size:.95rem;line-height:1.2}
+.opt span span{display:block;font-size:.78rem;color:var(--muted);line-height:1.3}
+.btn{font:inherit;font-weight:700;font-size:.9rem;border:1.5px solid var(--ink);background:transparent;color:var(--ink);border-radius:999px;padding:.55rem 1.05rem;cursor:pointer;text-decoration:none;display:inline-block}
+.btn.solid{background:var(--on);color:var(--on-ink)}
+.btn.small{font-size:.8rem;padding:.3rem .7rem;border-width:1px}
+.btn:disabled{opacity:.5;cursor:default}
+.actions{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.9rem}
+.status{font-size:.85rem;color:var(--muted);min-height:1.2rem;margin:.5rem 0 0}
+button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
+.board{display:grid;gap:2rem}
+.sec-h{display:flex;justify-content:space-between;align-items:baseline;gap:1rem;margin-bottom:.6rem;border-bottom:1px solid var(--line);padding-bottom:.4rem}
+.sec-h p{margin:0;font-size:.8rem;color:var(--muted);text-align:right}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(9.5rem,1fr));gap:8px}
+.grid.tall{grid-template-columns:repeat(auto-fill,minmax(8rem,1fr))}
+.tile{display:block;text-decoration:none;color:var(--ink);background:var(--shade);border-radius:3px;overflow:hidden;position:relative}
+.tile img,.tile video{display:block;width:100%;height:100%;object-fit:cover;aspect-ratio:4/5;background:var(--shade)}
+.grid.tall .tile img,.grid.tall .tile video{aspect-ratio:9/16}
+.tile figcaption{font-size:.7rem;line-height:1.25;padding:.35rem .45rem .45rem;color:var(--muted);background:var(--tag)}
+.tile figcaption b{display:block;color:var(--ink);font-size:.74rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tile figure{margin:0}
+.skel{aspect-ratio:4/5;border-radius:3px;background:var(--shade)}
+.grid.tall .skel{aspect-ratio:9/16}
+.outs{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.7rem}
+.outs a{font-size:.82rem;font-weight:600;text-decoration:none;padding:.35rem .75rem;border-radius:999px;background:var(--chip)}
+.tracks{display:grid;gap:.5rem}
+.track{display:grid;grid-template-columns:56px 1fr auto;gap:.75rem;align-items:center;background:var(--tag);border-radius:3px;padding:.5rem}
+.track img,.track .art{width:56px;height:56px;border-radius:2px;object-fit:cover;display:block;background:var(--shade)}
+.track b{display:block;font-size:.93rem;line-height:1.2}
+.track span span{display:block;font-size:.8rem;color:var(--muted)}
+.play{width:40px;height:40px;border-radius:50%;border:1.5px solid var(--ink);background:transparent;color:var(--ink);cursor:pointer;font:inherit;font-weight:800}
+.play[aria-pressed="true"]{background:var(--on);color:var(--on-ink)}
+.track-links{grid-column:2/-1;display:flex;gap:.7rem;font-size:.78rem}
+.note{font-size:.85rem;color:var(--muted);margin:.4rem 0 0}
+.empty{font-size:.88rem;color:var(--muted);padding:.6rem 0}
+.field{padding:.8rem 0;border-top:1px solid var(--line)}
+.field>label,.lbl{display:flex;justify-content:space-between;gap:1rem;font-weight:600;font-size:.93rem;margin-bottom:.45rem}
+.field>label span,.lbl span{color:var(--muted);font-weight:400;text-align:right}
+textarea,input[type=text],input[type=password],select{width:100%;font:inherit;font-size:1rem;padding:.6rem .7rem;border:1.5px solid var(--line);border-radius:6px;background:var(--tag);color:var(--ink)}
+textarea{min-height:6rem;resize:vertical}
+input[type=range]{width:100%;accent-color:var(--ink);height:28px}
+.ends{display:flex;justify-content:space-between;font-size:.78rem;color:var(--muted);margin-top:-.2rem}
+.chips{display:flex;flex-wrap:wrap;gap:.4rem}
+.chip{font:inherit;font-size:.86rem;border:0;border-radius:999px;padding:.4rem .8rem;background:var(--chip);color:var(--ink);cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--on);color:var(--on-ink)}
+details{border-top:1px solid var(--line);padding:.8rem 0}
+details summary{font-weight:700;cursor:pointer}
+.list{list-style:none;margin:0;padding:0}
+.row{display:grid;grid-template-columns:auto 1fr auto;gap:.7rem;align-items:center;padding:.65rem 0;border-bottom:1px solid var(--line)}
+.row button.open{all:unset;cursor:pointer}
+.row b{display:block;font-size:.97rem}
+.row span span{display:block;font-size:.8rem;color:var(--muted)}
+.lex{display:grid;grid-template-columns:40px 1fr;gap:.7rem;padding:.6rem 0;border-top:1px solid var(--line)}
+.lex i{display:block;width:40px;height:40px;border-radius:3px}
+.lex p{margin:0;font-size:.85rem;color:var(--muted)}
+.lex b{color:var(--ink)}
+.devonly{display:none!important}
+body.dev .devonly{display:block!important}
+.perm{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:.7rem 0;border-top:1px solid var(--line)}
+.perm p{margin:0;font-size:.85rem;color:var(--muted)}
+.perm b{display:block;color:var(--ink);font-size:.93rem}
+@media (prefers-reduced-motion:reduce){.strip i{transition:none}}
+</style>
+</head>
+<body>
+<header class="top"><div class="top-in">
+  <p class="brand">NOVICE CODE</p>
+  <p class="cond" id="condLine">Conditions off</p>
+  <nav aria-label="Sections"><a href="#today">Today</a><a href="#scan">Scan</a><a href="#library">Library</a><a href="#settings">Settings</a></nav>
+</div></header>
+<main>
+
+<div class="view" id="v-today">
+  <h1 id="todayH">Today.</h1>
+  <p class="lede" id="todayLede"></p>
+  <div class="dash">
+    <aside class="rail">
+      <div class="tag" id="todayCard"></div>
+      <div class="opts" id="opts"></div>
+      <details id="inputs">
+        <summary>What’s going into today</summary>
+        <div class="field" style="border-top:0">
+          <label for="plan">Plans or thoughts <span>optional</span></label>
+          <textarea id="plan" placeholder="Track at 4. Still thinking about Ecclesiastes. Wearing the KNOT jacket."></textarea>
+        </div>
+        <div class="field"><div class="lbl">Sky <span id="skyAuto"></span></div><div class="chips" id="sky">
+          <button class="chip" data-v="sunny" aria-pressed="true">Sunny</button><button class="chip" data-v="hazy" aria-pressed="false">Hazy</button><button class="chip" data-v="overcast" aria-pressed="false">Overcast</button><button class="chip" data-v="fog" aria-pressed="false">Fog</button><button class="chip" data-v="rain" aria-pressed="false">Rain</button>
+        </div></div>
+        <div class="field"><label for="cMusic">Music you’ve had on <span id="cMusicV"></span></label><input type="range" id="cMusic" min="0" max="100" value="55"><div class="ends"><span>Slow</span><span>Loud</span></div></div>
+        <div class="field"><label for="cFeed">Your feed <span id="cFeedV"></span></label><input type="range" id="cFeed" min="0" max="100" value="65"><div class="ends"><span>Heavy</span><span>Light</span></div></div>
+        <div class="field"><label for="cSelf">Your energy <span id="cSelfV"></span></label><input type="range" id="cSelf" min="0" max="100" value="60"><div class="ends"><span>Drained</span><span>Charged</span></div></div>
+      </details>
+      <div class="actions"><button class="btn solid" id="genDay">Generate today</button></div>
+      <p class="status" id="dayStatus" aria-live="polite"></p>
+    </aside>
+    <div class="board" id="todayBoard"></div>
+  </div>
+</div>
+
+<div class="view" id="v-scan" hidden>
+  <h1>Scan.</h1>
+  <p class="lede">Describe a person, a day, an idea, or a piece. The scan reads it into a code and pulls references to build from.</p>
+  <div class="dash">
+    <aside class="rail">
+      <div class="chips" id="kind"><button class="chip" data-v="An idea" aria-pressed="true">An idea</button><button class="chip" data-v="A piece" aria-pressed="false">A piece</button><button class="chip" data-v="A post" aria-pressed="false">A post</button><button class="chip" data-v="A person" aria-pressed="false">A person</button></div>
+      <div class="field" style="border-top:0;margin-top:.6rem"><label for="desc">Describe it</label><textarea id="desc" placeholder="A hoodie about learning in public. Mistakes printed on the sleeve."></textarea></div>
+      <div class="actions"><button class="btn solid" id="scanBtn">Scan</button></div>
+      <p class="status" id="scanStatus" aria-live="polite"></p>
+      <div class="tag" id="scanCard" hidden style="margin-top:1rem"></div>
+      <div class="devonly" id="tune"></div>
+    </aside>
+    <div class="board" id="scanBoard"></div>
+  </div>
+</div>
+
+<div class="view" id="v-library" hidden>
+  <h1>Library.</h1>
+  <p class="lede">Everything you’ve saved, newest first. Stored on this phone only.</p>
+  <ul class="list" id="lib"></ul>
+  <div class="actions"><button class="btn small" id="exportLib">Export library</button><label class="btn small" for="importLib" style="cursor:pointer">Import library</label><input type="file" id="importLib" accept="application/json" hidden></div>
+  <p class="status" id="libStatus" aria-live="polite"></p>
+</div>
+
+<div class="view" id="v-settings" hidden>
+  <h1>Settings.</h1>
+  <p class="lede">Permissions and keys. Everything here stays on this device.</p>
+  <h2>Phone access</h2>
+  <div class="perm"><div><b>Location</b><p>Pulls local weather and daylight to read the day.</p></div><button class="btn small" id="permLoc">Allow</button></div>
+  <div class="perm"><div><b>Microphone</b><p>Listens for five seconds to measure how loud the room is. Nothing is recorded or sent.</p></div><button class="btn small" id="permMic">Listen now</button></div>
+  <p class="status" id="permStatus" aria-live="polite"></p>
+  <h2 style="margin-top:1.6rem">Keys</h2>
+  <div class="field" style="border-top:0"><label for="kClaude">Anthropic API key <span>for scans and daily options</span></label><input type="password" id="kClaude" autocomplete="off" placeholder="sk-ant-…"></div>
+  <div class="field"><label for="kModel">Model</label><input type="text" id="kModel" value="claude-sonnet-5-5"></div>
+  <div class="field"><label for="kPexels">Pexels API key <span>optional, adds photos and vertical video</span></label><input type="password" id="kPexels" autocomplete="off"></div>
+  <div class="actions"><button class="btn solid" id="saveKeys">Save keys</button></div>
+  <p class="status" id="keyStatus" aria-live="polite"></p>
+  <h2 style="margin-top:1.6rem">Advanced</h2>
+  <div class="perm"><div><b>Developer view</b><p>Shows the color system, values, and fine-tune controls.</p></div><button class="btn small" id="devToggle">Turn on</button></div>
+  <div class="perm"><div><b>Clear everything</b><p>Removes keys, library, and saved days from this phone.</p></div><button class="btn small" id="clearAll">Clear</button></div>
+  <section class="devonly" id="lexicon" style="margin-top:1.6rem"></section>
+</div>
+</main>
+<script>
+const DIMS=["Survival","Reason","Belonging","Emotion","Curiosity","Meaning"];
+const MODE={Survival:"Phrygian or minor pentatonic, built on a riff",Reason:"Dorian, cool and measured",Belonging:"Major, easy to sing along to",Emotion:"Natural minor",Curiosity:"Lydian, bright with one strange note",Meaning:"Mixolydian, grounded and hymn-like"};
+// id, name, dimension, pigment, hex, meaning, why this color, subject, image, sound, cloth, art
+const DRIVES=[
+["desire","Desire",0,"Vermilion","#D9381E","Wanting. Appetite. The pull toward something.","Vermilion is the red of blood and heat, the color bodies answer to first.","wanting something you don’t have yet","close-ups, hands reaching, heat haze, food, fire","a hook that repeats until it’s craved, vocals pushed forward","one saturated red panel or lining that shows when you move","a single hot focal point everything leans toward"],
+["instinct","Instinct",0,"Oxblood","#7B1E1E","Acting before thinking. Fight, protect, react.","Oxblood is red that has darkened, force held in the body.","the moment before you react","fast handheld, bodies in motion, breath and sweat","percussion first, raw takes, some distortion","reinforced seams, bar tacks, heavy hardware","gestural marks made fast, no erasing"],
+["endurance","Endurance",0,"Granite","#8B8D8C","Outlasting. Staying when it’s hard.","Granite is what’s left after weather takes everything softer.","showing up again","long unbroken takes, repetition, the same spot across days","a steady pulse that never drops out, drones underneath","heavyweight fabric built to wear in, visible wear welcome","layers built up slowly, texture you can feel"],
+["awareness","Awareness",1,"Amethyst","#9B72CF","Noticing. Sensing what’s under the surface.","Violet sits at the edge of what the eye can see.","what you notice when you slow down","slow push-ins, reflections, eyes, shallow focus","space and reverb, quiet details tucked in the mix","hidden details, tonal embroidery, prints on the inside","subtle shifts that reward a second look"],
+["discipline","Discipline",1,"Steel blue","#4F6D8A","Practice. Structure. Doing the reps.","Steel is iron that went through the fire on purpose.","the routine behind the result","symmetry, locked tripod, grids, cuts on the beat","tight drums, few parts, nothing wasted","sharp pattern cutting, uniform shapes, precise topstitching","grids, hard edges, measured spacing"],
+["insight","Insight",1,"Saffron","#F2B705","The click. Understanding arriving all at once.","Yellow is the color of light, the lamp turned on.","the lesson you just learned","a hard light change, a reveal, text on screen","a key change or drop right where the idea lands","one bright accent that reads from across the room","high contrast with one area of pure light"],
+["kinship","Kinship",2,"Wheat","#D8C49A","Us. The people you belong with.","Wheat is bread, what people have always shared at one table.","your people","group shots, shared meals, wide frames with everyone in","gang vocals, call and response, a live-room feel","pieces made to be worn as a set, a shared mark","many figures, a repeating motif"],
+["nurture","Nurture",2,"Leaf green","#4E8F3A","Growing something. Caring for what’s small.","Green is chlorophyll, the color of things alive and growing.","something you’re raising or building","time-lapses of growth, hands at work, morning light","warm acoustic layers that build slowly","soft natural fibers, room to grow, visible mending","organic shapes, parts left unfinished on purpose"],
+["affection","Affection",2,"Rose","#E58CA5","Warmth toward someone. Tenderness.","Rose is the flush of skin and the first blossom.","someone you’d do it for","close two-shots, soft focus, warm skin tones","close, soft vocals and warm chords","soft hand feel, rounded shapes, a message on the inside","soft edges, warm blended tones"],
+["empathy","Empathy",3,"Deep water","#1F5F8B","Feeling with someone else.","Deep water takes the shape of whatever holds it.","seeing it from their side","over-the-shoulder shots, mirrors, water","duets, harmonies answering the lead","fluid drape, reversible pieces","translucent layers and washes"],
+["melancholy","Melancholy",3,"Slate blue","#6F8FA8","Missing something. The ache that proves it mattered.","Blue-grey is distance, the color far-off hills turn.","what you miss","wide empty frames, windows, rain, one small figure","slow tempo, room tone left in, long tails","washed and faded finishes, oversized fit","a muted palette with lots of empty space"],
+["resentment","Resentment",3,"Bruise","#5A3A5E","A hurt that’s still being held.","Bruise purple is an injury still showing.","what you haven’t let go of yet","tight framing, hard shadows, things left unsaid","tension that doesn’t resolve, low synths","raw edges, distressing, a clashing contrast stitch","scratched surfaces, overpainting"],
+["wonder","Wonder",4,"Sky","#7EC8E3","Awe. Looking up.","Sky blue is the biggest thing anyone sees every day.","something bigger than you","low angles looking up, wide landscapes, time-lapse skies","open chords, rising lines, big reverb","light airy layers that move in the wind","big scale, open composition"],
+["tinkering","Tinkering",4,"Verdigris","#43B3A0","Making, fixing, taking apart to see how it works.","Verdigris is what hands and time do to copper.","the process, mistakes included","overhead bench shots, tools, attempt one next to attempt five","found sounds, loops built live","exposed construction, patches, utility pockets","collage, visible process, studies"],
+["imagination","Imagination",4,"Indigo","#2E2A7A","Inventing what isn’t there yet.","Indigo is the night sky, the first screen people projected stories onto.","a world that doesn’t exist yet","surreal cuts, double exposure, dream logic","unexpected textures, pitched vocals, odd meters","an all-over print or an impossible shape","surreal imagery, invented forms"],
+["memory","Memory",5,"Sepia","#7A5C45","What came before and still lives in you.","Sepia is the brown old photographs turn.","where this started","archive footage, film grain, old photos, returning to a place","samples, tape hiss, an older song quoted","vintage references, aged dye, something inherited","found images, worn surfaces"],
+["rootedness","Rootedness",5,"Ochre","#C68A2E","Home ground. Where you’re from.","Ochre is earth pigment, the oldest paint humans have used.","where you come from","your streets, your block, the land, feet on the ground","a home rhythm, home language, bass you feel","earth dyes, workwear shapes, place names","earth tones, local materials"],
+["doubt","Doubt",5,"Ink","#2B2B30","Not knowing. The honest question.","Ink black is the page before the answer, and the dark you have to walk into.","what you’re not sure of","low light, silhouettes, a question on screen","silence used on purpose, endings left open","black on black, blank space, an unfinished hem","negative space, erasure"]
+];
+// id, name, pigment, hex, season moment, meaning, light, release, music, cloth
+const PHASES=[
+["seed","Seed","Loam","#3A2E28","Midwinter. Everything is underground and nothing shows yet.","Potential. The idea before anyone has seen it.","near dark, one practical light, interiors","teasers, sketches, demos","a sparse intro, one instrument","samples and prototypes, base layers"],
+["thaw","Thaw","Meltwater","#A9C4C2","Late winter. Ice breaks, water moves, buds are closed but there.","First movement. Trying it out loud for the first time.","cool overcast, soft and even","first attempts and behind-the-scenes","a tentative build, parts entering one at a time","transitional pieces, light layers over heavy"],
+["bloom","Bloom","New leaf","#B7D67A","Mid-spring. Leaves open, color returns, everything grows in public.","Growth people can see.","bright morning light, fresh greens","progress updates and reveals","the verse opening up, melody arriving","lighter fabrics and the first real color"],
+["blaze","Blaze","High sun","#F26A1B","Midsummer. Longest days, hardest light, nothing held back.","Peak. Full power.","hard noon sun, strong shadows","the drop, the main event","the chorus with everything in","the boldest piece in the loudest color"],
+["ripen","Ripen","Apricot","#D98E32","Late summer. Fruit is heavy, days are golden and slow.","Fullness. Skill settled into ease.","golden hour, warm and low","the polished piece, the showcase","the groove, confident and unhurried","your best-made staple"],
+["harvest","Harvest","Stubble gold","#B08D3C","Early autumn. Fields are cut, things are gathered and counted.","Gathering. Sharing what you made and taking stock.","clear low sun, long shadows","recaps, lessons learned, giving back","the bridge, looking back at the theme","layering returns, collaborations"],
+["ember","Ember","Banked coal","#7A2E1D","Late autumn. Leaves are down, fires are lit, what’s left is what lasts.","Letting go. Keeping only what matters.","firelight and dusk, warm pockets in the dark","endings, tributes, final versions","the outro, parts dropping away","heavy knits, deep tones, archive pieces"],
+["frost","Frost","Hoarfrost","#DCE6EA","First hard freeze. The air is clear, sound carries, every edge is sharp.","Stillness and clarity. The long view.","cold clear light, blue shadows, high contrast","manifestos and statements, the why","near silence, a single held note","clean lines, pale tones, minimal branding"]
+];
+// name, cut, bpm, color handling, camera move, finish
+const FORCE=[
+["Still","Hold shots 6 to 10 seconds. Let them sit.","60 to 80 BPM","desaturated, low contrast","barely moving","washed, matte, tonal"],
+["Steady","Cut every 3 to 5 seconds.","80 to 100 BPM","natural color, gentle contrast","slow, deliberate moves","soft print, slight fade"],
+["Charged","Cut every 1.5 to 3 seconds, on the beat.","100 to 125 BPM","saturated, clear contrast","active, following the subject","crisp print, clean color"],
+["Blazing","Cut faster than 1.5 seconds. Don’t let up.","125 to 160 BPM","fully saturated, hard contrast","whip pans, snap zooms","high-contrast print, bold placement"]
+];
+// name, fabric, low end, camera, composition
+const WEIGHT=[
+["Airy","under 150 gsm: voile, mesh, light jersey","almost no bass, high and open","handheld or floating","mostly empty space"],
+["Light","150 to 200 gsm: standard tee weight","light low end","handheld, loose framing","open, with room to breathe"],
+["Grounded","200 to 320 gsm: heavyweight tee to midweight fleece","solid bass and kick","tripod, level horizon","balanced and anchored low"],
+["Dense","320 gsm and up: heavy fleece, denim, canvas","sub-bass you feel","locked off, tight framing","full frame, little empty space"]
+];
+(function(){
+"use strict";
+const $=id=>document.getElementById(id);
+const clamp=(x,a=0,b=1)=>Math.min(b,Math.max(a,x));
+const esc=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const h2r=h=>[1,3,5].map(i=>parseInt(h.slice(i,i+2),16));
+const r2h=c=>"#"+c.map(v=>Math.round(v).toString(16).padStart(2,"0")).join("").toUpperCase();
+const mix=(a,b,t)=>{const A=h2r(a),B=h2r(b);return r2h(A.map((v,i)=>v+(B[i]-v)*clamp(t)))};
+function ramp(st,t){t=clamp(t);for(let i=1;i<st.length;i++){if(t<=st[i][0]){const[p0,c0]=st[i-1],[p1,c1]=st[i];return mix(c0,c1,(t-p0)/(p1-p0||1))}}return st[st.length-1][1]}
+const FR=[[0,"#55687A"],[.35,"#6E7451"],[.65,"#C29A3E"],[1,"#B0412C"]],WR=[[0,"#E8E3D7"],[.5,"#9A968C"],[1,"#33373F"]];
+const lvl=x=>x<25?0:x<50?1:x<75?2:3;
+const cap=s=>String(s||"").charAt(0).toUpperCase()+String(s||"").slice(1);
+const enc=encodeURIComponent;
+const TEMPO=[72,92,112,138];
+const FEEL={Survival:"minor, driving",Reason:"cool, measured",Belonging:"major, warm",Emotion:"minor, tender",Curiosity:"bright, a little strange",Meaning:"grounded, hymn-like"};
+
+/* ---------- storage ---------- */
+const LS={get(k,d){try{const v=localStorage.getItem("nc:"+k);return v==null?d:JSON.parse(v)}catch(_){return d}},set(k,v){try{localStorage.setItem("nc:"+k,JSON.stringify(v))}catch(_){}},del(k){try{localStorage.removeItem("nc:"+k)}catch(_){}}};
+const keys=()=>LS.get("keys",{claude:"",model:"claude-sonnet-5-5",pexels:""});
+const dayKey=()=>{const d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")};
+
+/* ---------- code ---------- */
+function codeFor(v){const m=DRIVES[v.main],s=DRIVES[v.second];return[m[4],v.second===v.main?mix(m[4],"#151310",.5):s[4],ramp(FR,v.force/100),ramp(WR,v.weight/100),PHASES[v.phase][3]]}
+const names=v=>[DRIVES[v.main][1],DRIVES[v.second][1],FORCE[lvl(v.force)][0],WEIGHT[lvl(v.weight)][0],PHASES[v.phase][1]];
+const ROLES=["Drive","Second drive","Force","Weight","Phase"];
+const mini=v=>codeFor(v).map(h=>'<i style="background:'+h+'"></i>').join("");
+function validCode(o){return o&&Number.isInteger(o.main)&&DRIVES[o.main]&&Number.isInteger(o.second)&&DRIVES[o.second]&&Number.isInteger(o.phase)&&PHASES[o.phase]&&typeof o.force==="number"&&typeof o.weight==="number"}
+function cardHTML(v){
+  const c=codeFor(v),n=names(v);
+  return '<div class="strip">'+c.map((h,i)=>'<i style="background:'+h+'" title="'+ROLES[i]+": "+esc(n[i])+'"></i>').join("")+'</div><div class="strip-l">'+n.map((x,i)=>'<div><b>'+esc(x)+'</b>'+ROLES[i]+'</div>').join("")+'</div>'+
+  '<p class="code-t">'+esc(v.title||"Untitled")+'</p><p class="code-r">'+esc(v.read||DRIVES[v.main][5]+" "+PHASES[v.phase][5])+'</p>'+
+  '<p class="dev-line devonly">'+c.join(" ")+" · force "+v.force+" · weight "+v.weight+'</p>';
+}
+
+/* ---------- conditions ---------- */
+const SKY={sunny:1,hazy:.8,fog:.5,overcast:.55,rain:.35};
+const SEASON=[0,1,1,2,2,3,3,4,5,5,6,7];
+const cond=Object.assign({sky:"sunny",temp:null,place:"",light:"",room:null,auto:false},LS.get("cond:"+dayKey(),{}));
+function setSky(s){cond.sky=s;$("sky").querySelectorAll(".chip").forEach(x=>x.setAttribute("aria-pressed",x.dataset.v===s))}
+function condVals(){const mu=+$("cMusic").value,fe=+$("cFeed").value,se=+$("cSelf").value,room=cond.room;
+  const energy=room==null?.5*mu+.5*se:.4*mu+.35*se+.25*room;
+  return{mu,fe,se,room,force:Math.round(energy),weight:Math.round(clamp(100-(.6*fe+.4*SKY[cond.sky]*100),0,100)),phase:SEASON[new Date().getMonth()]}}
+function renderCond(){
+  const bits=[];if(cond.place)bits.push(cond.place);if(cond.temp!=null)bits.push(Math.round(cond.temp)+"°F");bits.push(cond.sky);if(cond.light)bits.push(cond.light);if(cond.room!=null)bits.push("room "+cond.room);
+  $("condLine").textContent=cond.auto||cond.room!=null?bits.join(", "):"Conditions off";
+  $("skyAuto").textContent=cond.auto?"from your location":"";
+  ["cMusic","cFeed","cSelf"].forEach(id=>$(id+"V").textContent=$(id).value);
+  LS.set("cond:"+dayKey(),{sky:cond.sky,temp:cond.temp,place:cond.place,light:cond.light,room:cond.room,auto:cond.auto});
+}
+function wmoSky(code,cloud){if([45,48].includes(code))return"fog";if((code>=51&&code<=67)||(code>=80&&code<=82)||code>=95)return"rain";if(code>=71&&code<=77||code===85||code===86)return"overcast";if(code===3||cloud>75)return"overcast";if(code===2||cloud>35)return"hazy";return"sunny"}
+async function readLocation(fromClick){
+  if(!("geolocation" in navigator)){$("permStatus").textContent="This browser doesn’t share location.";return}
+  $("permStatus").textContent="Asking for location…";
+  navigator.geolocation.getCurrentPosition(async pos=>{
+    const {latitude:la,longitude:lo}=pos.coords;
+    try{
+      const r=await fetch("https://api.open-meteo.com/v1/forecast?latitude="+la+"&longitude="+lo+"&current=temperature_2m,weather_code,cloud_cover,is_day&daily=sunrise,sunset&timezone=auto&temperature_unit=fahrenheit&forecast_days=1");
+      const w=await r.json();const cur=w.current||{};
+      cond.temp=cur.temperature_2m;setSky(wmoSky(cur.weather_code,cur.cloud_cover||0));cond.auto=true;
+      const now=Date.now(),rise=Date.parse(w.daily.sunrise[0]),set=Date.parse(w.daily.sunset[0]);
+      cond.light=now<rise-36e5||now>set+36e5?"night":now<rise+36e5?"early light":now>set-36e5?"golden hour":"daylight";
+    }catch(_){$("permStatus").textContent="Got your location but the weather didn’t load. Check your connection."}
+    try{const g=await(await fetch("https://api.bigdatacloud.net/data/reverse-geocode-client?latitude="+la+"&longitude="+lo+"&localityLanguage=en")).json();cond.place=g.city||g.locality||""}catch(_){}
+    LS.set("locOK",true);renderCond();$("permLoc").textContent="Refresh";if(fromClick)$("permStatus").textContent="Location on. Today now reads your weather and daylight.";
+  },err=>{$("permStatus").textContent=err.code===1?"Location is off for this site. Turn it on in your browser’s site settings to use it.":"Couldn’t get your location. Try again outside or with a better signal."},{timeout:12000,maximumAge:6e5});
+}
+async function listenRoom(){
+  const st=$("permStatus");
+  if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){st.textContent="This browser can’t use the microphone.";return}
+  let stream;
+  try{stream=await navigator.mediaDevices.getUserMedia({audio:true})}catch(_){st.textContent="Microphone is off for this site. Turn it on in your browser’s site settings to use it.";return}
+  st.textContent="Listening for five seconds…";$("permMic").disabled=true;
+  const AC=window.AudioContext||window.webkitAudioContext,ac=new AC(),src=ac.createMediaStreamSource(stream),an=ac.createAnalyser();an.fftSize=2048;src.connect(an);
+  const buf=new Float32Array(an.fftSize);let sum=0,n=0;
+  const t0=performance.now();
+  await new Promise(res=>{(function tick(){an.getFloatTimeDomainData(buf);let s=0;for(const x of buf)s+=x*x;sum+=Math.sqrt(s/buf.length);n++;performance.now()-t0<5000?requestAnimationFrame(tick):res()})()});
+  stream.getTracks().forEach(t=>t.stop());ac.close();
+  const db=20*Math.log10((sum/n)||1e-6);cond.room=Math.round(clamp((db+60)/50,0,1)*100);
+  renderCond();$("permMic").disabled=false;st.textContent="Room sound measured at "+cond.room+" out of 100. It now feeds today’s energy.";
+}
+
+/* ---------- claude ---------- */
+const TEXTSPEC='"outfit": {"top","bottom","accent","shoes": short item names with color}, "video": {"hook": on-screen line at most 12 words, "shots": exactly 4 short shot descriptions for a 15 second vertical video}, "song": {"idea": at most 14 words, "feel": 2 to 4 words}, "media": {"mood": 2 short image search phrases for a mood board, "fit": 2 short image search phrases for outfit photos, "songs": 3 real, existing songs you are certain of as {"title","artist"}, "video": 2 short stock-video search phrases, "art": 2 short artwork search phrases (subjects or movements)}';
+const KEYLIST=()=>"DRIVES (by id):\n"+DRIVES.map(x=>x[0]+": "+x[1]+". "+x[5]).join("\n")+"\n\nPHASES (by id), the stage the work is in:\n"+PHASES.map(x=>x[0]+": "+x[5]).join("\n")+"\n\nFORCE 0-100 how hard it pushes. WEIGHT 0-100 how heavy it sits.";
+async function askClaude(prompt){
+  const k=keys();if(!k.claude)throw new Error("nokey");
+  const r=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"content-type":"application/json","x-api-key":k.claude,"anthropic-version":"2023-06-01","anthropic-dangerous-direct-browser-access":"true"},body:JSON.stringify({model:k.model||"claude-sonnet-5-5",max_tokens:3000,messages:[{role:"user",content:prompt}]})});
+  if(!r.ok){const t=await r.text();throw new Error(r.status===401?"badkey":r.status===429?"limit":"api:"+t.slice(0,160))}
+  const d=await r.json();const txt=(d.content||[]).filter(b=>b.type==="text").map(b=>b.text).join("").replace(/```json|```/g,"").trim();
+  const s=txt.indexOf("{"),e=txt.lastIndexOf("}");return JSON.parse(txt.slice(s,e+1));
+}
+const s0=(x,n)=>String(x||"").slice(0,n),arr=(a,n,m)=>Array.isArray(a)?a.slice(0,n).map(z=>s0(z,m)).filter(Boolean):[];
+function parseOpt(o){
+  const mi=DRIVES.findIndex(x=>x[0]===o.main),si=DRIVES.findIndex(x=>x[0]===o.second),pi=PHASES.findIndex(x=>x[0]===o.phase);if(mi<0||pi<0)return null;
+  const of=o.outfit||{},vd=o.video||{},sg=o.song||{},md=o.media||{};
+  return{title:s0(o.title,40),read:s0(o.read,200),main:mi,second:si<0||si===mi?(mi+1)%18:si,force:Math.round(clamp(+o.force||0,0,100)),weight:Math.round(clamp(+o.weight||0,0,100)),phase:pi,
+    text:{outfit:{top:s0(of.top,60),bottom:s0(of.bottom,60),accent:s0(of.accent,60),shoes:s0(of.shoes,60)},video:{hook:s0(vd.hook,100),shots:arr(vd.shots,4,90)},song:{idea:s0(sg.idea,120),feel:s0(sg.feel,40)},
+      media:{mood:arr(md.mood,2,60),fit:arr(md.fit,2,60),video:arr(md.video,2,60),art:arr(md.art,2,60),songs:Array.isArray(md.songs)?md.songs.filter(z=>z&&z.title&&z.artist).slice(0,3).map(z=>({title:s0(z.title,80),artist:s0(z.artist,60)})):[]}}};
+}
+
+/* ---------- fallback ---------- */
+function fallbackText(v){
+  const m=DRIVES[v.main],s=DRIVES[v.second],p=PHASES[v.phase];
+  return{outfit:{top:(v.weight>=60?"heavy ":"boxy ")+m[3].toLowerCase()+(v.weight>=60?" hoodie":" tee"),bottom:(v.weight>=50?"dark":"light")+" relaxed pants",accent:s[3].toLowerCase()+" cap",shoes:p[2].toLowerCase()+" sneakers"},
+    video:{hook:cap(m[7])+".",shots:["Open mid-action, line on screen","Close: "+m[8].split(",")[0],"Wide: "+s[8].split(",")[0],"Land the last line and hold"]},
+    song:{idea:"A track about "+m[7],feel:FEEL[DIMS[m[2]]]},
+    media:{mood:[m[3]+" "+s[3]+" aesthetic",p[2]+" light"],fit:[m[3]+" streetwear outfit",(v.weight>=50?"heavyweight":"lightweight")+" "+s[3]+" fit"],video:[m[8].split(",")[0],p[6].split(",")[0]],art:[m[7],m[3]+" painting"],songs:[]}};
+}
+function baseCode(){const lib=LS.get("library",[]);const prof=lib.find(x=>x.kind==="Creator profile");return prof||{main:17,second:5,force:45,weight:50,phase:2,title:"Novice"}}
+function fallbackDay(){
+  const b=baseCode(),c=condVals();
+  const A={...b,force:Math.round((b.force+c.force)/2),weight:Math.round((b.weight+c.weight)/2),phase:c.phase,title:"Stay the course",read:"Your usual lane, tuned to today."};
+  const B={main:b.second,second:b.main,force:clamp(b.force+20,0,100),weight:clamp(b.weight-15,0,100),phase:Math.min(c.phase+1,7),title:"Push it forward",read:"Lead with the other side of you."};
+  const C={main:b.main,second:(b.main+6)%18,force:clamp(b.force-25,0,100),weight:clamp(b.weight+15,0,100),phase:c.phase,title:"Slow it down",read:"Same root, quieter and closer."};
+  return[A,B,C].map(o=>{o.second=o.second===o.main?(o.main+1)%18:o.second;o.text=fallbackText(o);return o});
+}
+
+/* ---------- media sources ---------- */
+const cache=new Map();
+async function cached(key,fn){if(cache.has(key))return cache.get(key);const p=fn().catch(()=>[]);cache.set(key,p);return p}
+const getJSON=async(u,o)=>{const r=await fetch(u,o);if(!r.ok)throw new Error(r.status);return r.json()};
+const SRC={
+  openverse:q=>cached("ov:"+q,async()=>(await getJSON("https://api.openverse.org/v1/images/?q="+enc(q)+"&page_size=8&mature=false")).results.map(r=>({img:r.thumbnail||r.url,link:r.foreign_landing_url||r.url,title:r.title,by:(r.creator?r.creator+", ":"")+"Openverse"}))),
+  arena:q=>cached("ar:"+q,async()=>((await getJSON("https://api.are.na/v2/search/blocks?q="+enc(q)+"&per=12")).blocks||[]).filter(b=>b.image).map(b=>({img:(b.image.display||b.image.thumb||b.image.original||{}).url,link:"https://www.are.na/block/"+b.id,title:b.title||b.generated_title||"Are.na block",by:"Are.na"})).filter(x=>x.img)),
+  pexels:q=>{const k=keys().pexels;if(!k)return Promise.resolve([]);return cached("px:"+q,async()=>(await getJSON("https://api.pexels.com/v1/search?query="+enc(q)+"&per_page=8&orientation=portrait",{headers:{Authorization:k}})).photos.map(p=>({img:p.src.medium,link:p.url,title:p.alt||q,by:p.photographer+", Pexels"})))},
+  pexelsVideo:q=>{const k=keys().pexels;if(!k)return Promise.resolve([]);return cached("pv:"+q,async()=>(await getJSON("https://api.pexels.com/videos/search?query="+enc(q)+"&per_page=6&orientation=portrait",{headers:{Authorization:k}})).videos.map(v=>{const f=(v.video_files||[]).filter(x=>x.link&&x.width).sort((a,b)=>a.width-b.width);const pick=f.find(x=>x.width>=360)||f[0];return{poster:v.image,src:pick&&pick.link,link:v.url,title:q,by:(v.user&&v.user.name?v.user.name+", ":"")+"Pexels"}}).filter(x=>x.src))},
+  aic:q=>cached("aic:"+q,async()=>(await getJSON("https://api.artic.edu/api/v1/artworks/search?q="+enc(q)+"&limit=10&fields=id,title,artist_title,image_id")).data.filter(a=>a.image_id).map(a=>({img:"https://www.artic.edu/iiif/2/"+a.image_id+"/full/400,/0/default.jpg",link:"https://www.artic.edu/artworks/"+a.id,title:a.title,by:(a.artist_title||"Unknown")+", Art Institute of Chicago"})))
+};
+let jsonpN=0;
+function itunes(term){return cached("it:"+term,()=>new Promise(res=>{const cb="__it"+(++jsonpN),s=document.createElement("script");const done=v=>{delete window[cb];s.remove();res(v)};const t=setTimeout(()=>done(null),8000);window[cb]=d=>{clearTimeout(t);done(d&&d.results&&d.results[0]||null)};s.src="https://itunes.apple.com/search?term="+enc(term)+"&entity=song&limit=1&callback="+cb;s.onerror=()=>{clearTimeout(t);done(null)};document.head.appendChild(s)}))}
+const OUT={
+  pinterest:q=>["Pinterest","https://www.pinterest.com/search/pins/?q="+enc(q)],
+  arena:q=>["Are.na","https://www.are.na/search/"+enc(q)],
+  grailed:q=>["Grailed","https://www.grailed.com/shop?query="+enc(q)],
+  depop:q=>["Depop","https://www.depop.com/search/?q="+enc(q)],
+  ssense:q=>["SSENSE","https://www.ssense.com/en-us/men?q="+enc(q)],
+  spotify:q=>["Spotify","https://open.spotify.com/search/"+enc(q)],
+  apple:q=>["Apple Music","https://music.apple.com/us/search?term="+enc(q)],
+  soundcloud:q=>["SoundCloud","https://soundcloud.com/search?q="+enc(q)],
+  tiktok:q=>["TikTok","https://www.tiktok.com/search?q="+enc(q)],
+  youtube:q=>["YouTube","https://www.youtube.com/results?search_query="+enc(q)],
+  letterboxd:q=>["Letterboxd","https://letterboxd.com/search/"+enc(q)+"/"],
+  behance:q=>["Behance","https://www.behance.net/search/projects?search="+enc(q)],
+  cosmos:q=>["Cosmos","https://www.cosmos.so/search/elements?q="+enc(q)]
+};
+const outs=(q,list)=>'<div class="outs">'+list.map(k=>{const[l,u]=OUT[k](q);return'<a href="'+u+'" target="_blank" rel="noopener noreferrer">'+l+'</a>'}).join("")+'</div>';
+const skel=(n,tall)=>'<div class="grid'+(tall?" tall":"")+'">'+Array.from({length:n},()=>'<div class="skel"></div>').join("")+'</div>';
+const tile=x=>'<a class="tile" href="'+esc(x.link)+'" target="_blank" rel="noopener noreferrer"><figure><img src="'+esc(x.img)+'" alt="'+esc(x.title)+'" loading="lazy" referrerpolicy="no-referrer" onerror="this.closest(\'a\').remove()"><figcaption><b>'+esc(x.title||"Reference")+'</b>'+esc(x.by)+'</figcaption></figure></a>';
+function interleave(lists,n){const out=[],seen=new Set();for(let i=0;out.length<n&&i<12;i++)for(const l of lists){const x=l[i];if(x&&x.img&&!seen.has(x.img)){seen.add(x.img);out.push(x);if(out.length>=n)break}}return out}
+
+let audio=null;
+function stopAudio(){if(audio){audio.pause();audio=null}document.querySelectorAll(".play[aria-pressed=true]").forEach(b=>{b.setAttribute("aria-pressed","false");b.textContent="▶";b.setAttribute("aria-label","Play preview")})}
+function boardHTML(id){return['<section id="'+id+'-mood"></section>','<section id="'+id+'-fit"></section>','<section id="'+id+'-sound"></section>','<section id="'+id+'-video"></section>','<section id="'+id+'-art"></section>'].join("")}
+let boardToken=0;
+async function fillBoard(id,v){
+  const tok=++boardToken;stopAudio();
+  const t=v.text||fallbackText(v),md=t.media||{},fb=fallbackText(v).media;
+  const mood=md.mood&&md.mood.length?md.mood:fb.mood,fit=md.fit&&md.fit.length?md.fit:fb.fit,vq=md.video&&md.video.length?md.video:fb.video,aq=md.art&&md.art.length?md.art:fb.art;
+  const of=t.outfit||{},sg=t.song||{},vd=t.video||{},m=DRIVES[v.main];
+  const head=(title,sub)=>'<div class="sec-h"><h2>'+title+'</h2><p>'+esc(sub)+'</p></div>';
+  $(id).innerHTML=boardHTML(id);
+  const S=k=>$(id+"-"+k);
+  S("mood").innerHTML=head("Mood board","Are.na, Openverse"+(keys().pexels?", Pexels":""))+skel(8)+outs(mood[0],["arena","pinterest","cosmos"]);
+  S("fit").innerHTML=head("Fits",[of.top,of.bottom,of.accent,of.shoes].filter(Boolean).join(", "))+skel(4)+outs(fit[0],["pinterest","grailed","depop","ssense"]);
+  S("sound").innerHTML=head("Sound","About "+TEMPO[lvl(v.force)]+" BPM, "+(sg.feel||FEEL[DIMS[m[2]]]))+(sg.idea?'<p class="note" style="margin:0 0 .6rem">'+esc(sg.idea)+'</p>':"")+'<div class="tracks" id="'+id+'-tracks"><div class="skel" style="aspect-ratio:auto;height:72px"></div></div>'+outs((sg.feel||FEEL[DIMS[m[2]]])+" playlist",["spotify","apple","soundcloud"]);
+  S("video").innerHTML=head("Video",vd.hook?"Hook: "+vd.hook:"Vertical, about 15 seconds")+(vd.shots&&vd.shots.length?'<ol class="note" style="margin:0 0 .7rem;padding-left:1.2rem">'+vd.shots.map(x=>'<li>'+esc(x)+'</li>').join("")+'</ol>':"")+(keys().pexels?skel(4,true):"")+outs(vq[0],["tiktok","youtube","letterboxd"]);
+  S("art").innerHTML=head("Art","Art Institute of Chicago, Are.na")+skel(4)+outs(aq[0],["behance","arena","cosmos"]);
+
+  // mood
+  Promise.all([...mood.map(SRC.arena),...mood.map(SRC.openverse),...mood.map(SRC.pexels)]).then(L=>{if(tok!==boardToken)return;const items=interleave(L,8);
+    S("mood").querySelector(".grid").outerHTML=items.length?'<div class="grid">'+items.map(tile).join("")+'</div>':'<p class="empty">No mood images came back. Try the links below.</p>'});
+  // fit
+  Promise.all([...fit.map(SRC.pexels),...fit.map(SRC.openverse)]).then(L=>{if(tok!==boardToken)return;const items=interleave(L,4);
+    S("fit").querySelector(".grid").outerHTML=items.length?'<div class="grid">'+items.map(tile).join("")+'</div>':'<p class="empty">No outfit photos came back. Pinterest and Grailed below will have more.</p>'});
+  // sound
+  const songs=md.songs||[];
+  if(!songs.length){$(id+"-tracks").innerHTML='<p class="empty">Generate today with your Claude key to get specific songs. Until then, search by feel below.</p>'}
+  else Promise.all(songs.map(s=>itunes(s.artist+" "+s.title))).then(R=>{if(tok!==boardToken)return;
+    $(id+"-tracks").innerHTML=songs.map((s,i)=>{const r=R[i];const art=r&&r.artworkUrl100?'<img src="'+esc(r.artworkUrl100.replace("100x100","200x200"))+'" alt="" loading="lazy">':'<div class="art" style="background:'+codeFor(v)[i%5]+'"></div>';
+      const q=s.artist+" "+s.title;
+      return '<div class="track">'+art+'<span><b>'+esc(s.title)+'</b><span>'+esc(s.artist)+'</span></span>'+(r&&r.previewUrl?'<button class="play" data-src="'+esc(r.previewUrl)+'" aria-pressed="false" aria-label="Play preview">▶</button>':'<span></span>')+
+        '<div class="track-links"><a href="'+OUT.spotify(q)[1]+'" target="_blank" rel="noopener noreferrer">Spotify</a><a href="'+(r&&r.trackViewUrl?esc(r.trackViewUrl):OUT.apple(q)[1])+'" target="_blank" rel="noopener noreferrer">Apple Music</a><a href="'+OUT.youtube(q)[1]+'" target="_blank" rel="noopener noreferrer">YouTube</a></div></div>'}).join("")});
+  // video
+  if(keys().pexels)Promise.all(vq.map(SRC.pexelsVideo)).then(L=>{if(tok!==boardToken)return;const items=[];L.forEach(l=>l.slice(0,2).forEach(x=>items.push(x)));
+    const g=S("video").querySelector(".grid");if(g)g.outerHTML=items.length?'<div class="grid tall">'+items.slice(0,4).map(x=>'<a class="tile" href="'+esc(x.link)+'" target="_blank" rel="noopener noreferrer"><figure><video src="'+esc(x.src)+'" poster="'+esc(x.poster)+'" muted loop playsinline autoplay preload="none"></video><figcaption><b>'+esc(x.title)+'</b>'+esc(x.by)+'</figcaption></figure></a>').join("")+'</div>':'<p class="empty">No clips came back for this one.</p>'});
+  // art
+  Promise.all([...aq.map(SRC.aic),...aq.map(SRC.arena)]).then(L=>{if(tok!==boardToken)return;const items=interleave(L,4);
+    S("art").querySelector(".grid").outerHTML=items.length?'<div class="grid">'+items.map(tile).join("")+'</div>':'<p class="empty">No artwork came back. Try the links below.</p>'});
+}
+document.addEventListener("click",e=>{const b=e.target.closest(".play");if(!b)return;const on=b.getAttribute("aria-pressed")==="true";stopAudio();if(on)return;audio=new Audio(b.dataset.src);audio.play().catch(()=>{});audio.onended=stopAudio;b.setAttribute("aria-pressed","true");b.textContent="❚❚";b.setAttribute("aria-label","Pause preview")});
+
+/* ---------- today ---------- */
+let day=LS.get("day:"+dayKey(),null),pick=0;
+function renderToday(){
+  const d=new Date();$("todayH").textContent=d.toLocaleDateString([], {weekday:"long"})+".";
+  $("todayLede").textContent=d.toLocaleDateString([], {month:"long",day:"numeric"})+". Three directions for the day. Pick one and build from the board.";
+  const opts=day&&day.options&&day.options.length?day.options:fallbackDay();
+  if(pick>=opts.length)pick=0;const v=opts[pick];
+  $("todayCard").innerHTML=cardHTML(v)+'<div class="actions"><button class="btn small" id="saveDay">Save to library</button></div>';
+  $("opts").innerHTML=opts.map((o,i)=>'<button class="opt" data-i="'+i+'" aria-pressed="'+(i===pick)+'"><span class="mini">'+mini(o)+'</span><span><b>'+esc(o.title)+'</b><span>'+esc(o.read)+'</span></span></button>').join("");
+  $("saveDay").onclick=()=>{save({...v,kind:"Today’s pick"});$("saveDay").textContent="Saved"};
+  fillBoard("todayBoard",v);
+}
+$("opts").addEventListener("click",e=>{const b=e.target.closest(".opt");if(!b)return;pick=+b.dataset.i;renderToday()});
+function errMsg(e){const m=e&&e.message||"";return m==="nokey"?"Add your Anthropic key in Settings to generate. Showing options from your saved codes for now.":m==="badkey"?"That Anthropic key didn’t work. Check it in Settings.":m==="limit"?"Rate limited. Wait a minute and try again.":"That didn’t come back clean. Try again."}
+$("genDay").onclick=async()=>{
+  const st=$("dayStatus"),c=condVals(),d=new Date(),lib=LS.get("library",[]);
+  const prof=lib.filter(x=>x.kind==="Creator profile").map(x=>"- "+x.title+": "+names(x).join(", ")+". "+(x.read||"")).join("\n")||"- Novice: independent clothing brand. Videos pair everyday moments (gym, campus, scenery) with a lesson learned.";
+  const recent=lib.filter(x=>x.kind!=="Creator profile").slice(0,8).map(x=>"- "+x.title+" ("+(x.kind||"")+"): "+names(x).join(", ")+". "+(x.read||"")).join("\n")||"- none yet";
+  $("genDay").disabled=true;st.textContent="Reading today…";
+  try{
+    const r=await askClaude("You plan a creator's day. Give three different directions for today, each as a creative code plus concrete starting points.\n\n"+KEYLIST()+"\n\nCREATOR:\n"+prof+"\n\nRECENT SAVES:\n"+recent+
+      "\n\nTODAY: "+d.toLocaleDateString("en",{weekday:"long",month:"long",day:"numeric"})+(cond.place?", "+cond.place:"")+(cond.temp!=null?", "+Math.round(cond.temp)+"°F":"")+", sky "+cond.sky+(cond.light?", "+cond.light:"")+", music energy "+c.mu+"/100, feed mood "+c.fe+"/100 (100 is light), own energy "+c.se+"/100"+(c.room!=null?", room sound "+c.room+"/100":"")+".\nPLANS: "+($("plan").value.trim()||"none given")+
+      "\n\nOption 1 is the closest fit to the creator, option 2 a push in a new direction, option 3 a quieter take. Reply with ONLY JSON: {\"options\": [three objects, each {\"title\": at most 4 words, \"main\": drive id, \"second\": a different drive id, \"force\": number, \"weight\": number, \"phase\": phase id, \"read\": one sentence of at most 20 words, "+TEXTSPEC+"}]}");
+    const list=(r.options||[]).map(parseOpt).filter(Boolean).slice(0,3);if(!list.length)throw new Error("parse");
+    day={options:list};LS.set("day:"+dayKey(),day);pick=0;renderToday();st.textContent="Here’s today.";
+  }catch(e){st.textContent=errMsg(e)}
+  $("genDay").disabled=false;
+};
+
+/* ---------- scan ---------- */
+let scanned=null,kind="An idea";
+function renderScan(){
+  if(!scanned){$("scanCard").hidden=true;$("scanBoard").innerHTML='<p class="empty">Your references show up here after a scan.</p>';$("tune").innerHTML="";return}
+  $("scanCard").hidden=false;$("scanCard").innerHTML=cardHTML(scanned)+'<div class="actions"><button class="btn small" id="saveScan">Save to library</button></div>';
+  $("saveScan").onclick=()=>{save({...scanned,kind});$("saveScan").textContent="Saved"};
+  const opt=di=>DIMS.map((d,j)=>'<optgroup label="'+d+'">'+DRIVES.map((x,i)=>x[2]===j?'<option value="'+i+'"'+(i===di?" selected":"")+'>'+x[1]+'</option>':"").join("")+'</optgroup>').join("");
+  $("tune").innerHTML='<div class="field"><label for="tM">Drive</label><select id="tM">'+opt(scanned.main)+'</select></div><div class="field"><label for="tS">Second drive</label><select id="tS">'+opt(scanned.second)+'</select></div><div class="field"><label for="tF">Force <span>'+scanned.force+'</span></label><input type="range" id="tF" min="0" max="100" value="'+scanned.force+'"></div><div class="field"><label for="tW">Weight <span>'+scanned.weight+'</span></label><input type="range" id="tW" min="0" max="100" value="'+scanned.weight+'"></div><div class="field"><label for="tP">Phase</label><select id="tP">'+PHASES.map((p,i)=>'<option value="'+i+'"'+(i===scanned.phase?" selected":"")+'>'+p[1]+'</option>').join("")+'</select></div>';
+  [["tM","main"],["tS","second"],["tF","force"],["tW","weight"],["tP","phase"]].forEach(([id,k])=>$(id).onchange=e=>{scanned[k]=+e.target.value;scanned.read="";renderScan()});
+  fillBoard("scanBoard",scanned);
+}
+$("kind").addEventListener("click",e=>{const c=e.target.closest(".chip");if(!c)return;kind=c.dataset.v;$("kind").querySelectorAll(".chip").forEach(x=>x.setAttribute("aria-pressed",x===c))});
+$("scanBtn").onclick=async()=>{
+  const st=$("scanStatus"),txt=$("desc").value.trim();
+  if(!txt){st.textContent="Describe what you’re scanning first.";$("desc").focus();return}
+  $("scanBtn").disabled=true;st.textContent="Scanning…";
+  try{const r=await askClaude("Score a creative code. Read the description and choose the values that fit best.\n\n"+KEYLIST()+"\n\nKIND: "+kind+"\nDESCRIPTION: "+txt+"\n\nReply with ONLY JSON: {\"title\": at most 4 words, \"main\": drive id, \"second\": a different drive id, \"force\": number, \"weight\": number, \"phase\": phase id, \"read\": one sentence of at most 24 words on why it fits, "+TEXTSPEC+"}");
+    const o=parseOpt(r);if(!o)throw new Error("parse");scanned=o;renderScan();st.textContent="Scanned.";
+  }catch(e){
+    if(e&&e.message==="nokey"){st.textContent="Add your Anthropic key in Settings to scan. Developer view lets you set a code by hand.";if(document.body.classList.contains("dev")){scanned={main:17,second:5,force:50,weight:50,phase:2,title:txt.slice(0,30),read:""};scanned.text=fallbackText(scanned);renderScan()}}
+    else st.textContent=errMsg(e)}
+  $("scanBtn").disabled=false;
+};
+
+/* ---------- library ---------- */
+function save(v){const lib=LS.get("library",[]);lib.unshift({...v,id:Date.now().toString(36),createdAt:new Date().toISOString()});LS.set("library",lib.slice(0,300));renderLib()}
+function renderLib(){
+  const lib=LS.get("library",[]).filter(validCode);
+  $("lib").innerHTML=lib.length?lib.map(x=>'<li class="row"><span class="mini">'+mini(x)+'</span><button class="open" data-id="'+esc(x.id)+'"><span><b>'+esc(x.title||"Untitled")+'</b><span>'+esc((x.kind||"")+(x.createdAt?", "+new Date(x.createdAt).toLocaleDateString([], {month:"short",day:"numeric"}):""))+'</span></span></button><button class="btn small" data-del="'+esc(x.id)+'">Remove</button></li>').join(""):'<li class="empty">Nothing saved yet. Save a direction from Today or a scan.</li>';
+}
+$("lib").addEventListener("click",e=>{
+  const d=e.target.closest("[data-del]");if(d){LS.set("library",LS.get("library",[]).filter(x=>x.id!==d.dataset.del));renderLib();return}
+  const o=e.target.closest("[data-id]");if(o){const x=LS.get("library",[]).find(y=>y.id===o.dataset.id);if(x){scanned={...x,text:x.text||fallbackText(x)};kind=x.kind||kind;location.hash="scan";renderScan()}}
+});
+$("exportLib").onclick=()=>{const b=new Blob([JSON.stringify(LS.get("library",[]),null,2)],{type:"application/json"});const a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="novice-code-library.json";a.click();setTimeout(()=>URL.revokeObjectURL(a.href),2000)};
+$("importLib").onchange=async e=>{const f=e.target.files[0];if(!f)return;try{const add=JSON.parse(await f.text()).filter(validCode);const lib=LS.get("library",[]);const ids=new Set(lib.map(x=>x.id));LS.set("library",[...add.filter(x=>!ids.has(x.id)),...lib].slice(0,300));renderLib();$("libStatus").textContent="Imported "+add.length+" codes."}catch(_){$("libStatus").textContent="That file isn’t a Novice Code library export."}e.target.value=""};
+
+/* ---------- settings ---------- */
+function loadKeys(){const k=keys();$("kClaude").value=k.claude;$("kModel").value=k.model||"claude-sonnet-5-5";$("kPexels").value=k.pexels}
+$("saveKeys").onclick=()=>{LS.set("keys",{claude:$("kClaude").value.trim(),model:$("kModel").value.trim()||"claude-sonnet-5-5",pexels:$("kPexels").value.trim()});cache.clear();$("keyStatus").textContent="Saved on this phone."};
+$("permLoc").onclick=()=>readLocation(true);
+$("permMic").onclick=listenRoom;
+function setDev(on){document.body.classList.toggle("dev",on);LS.set("dev",on);$("devToggle").textContent=on?"Turn off":"Turn on"}
+$("devToggle").onclick=()=>setDev(!document.body.classList.contains("dev"));
+$("clearAll").onclick=()=>{if(!confirm("Remove keys, library, and saved days from this phone?"))return;Object.keys(localStorage).filter(k=>k.startsWith("nc:")).forEach(k=>localStorage.removeItem(k));location.reload()};
+$("lexicon").innerHTML='<h2>Color system</h2>'+DIMS.map((d,j)=>'<p class="note" style="margin-top:1rem"><b>'+d+'</b></p>'+DRIVES.filter(x=>x[2]===j).map(x=>'<div class="lex"><i style="background:'+x[4]+'"></i><p><b>'+x[1]+', '+x[3]+'.</b> '+x[5]+' '+x[6]+'</p></div>').join("")).join("")+
+  '<p class="note" style="margin-top:1rem"><b>Phases</b></p>'+PHASES.map(x=>'<div class="lex"><i style="background:'+x[3]+'"></i><p><b>'+x[1]+', '+x[2]+'.</b> '+x[4]+' '+x[5]+'</p></div>').join("");
+
+/* ---------- inputs, routing, boot ---------- */
+$("sky").addEventListener("click",e=>{const c=e.target.closest(".chip");if(!c)return;setSky(c.dataset.v);cond.auto=false;renderCond()});
+["cMusic","cFeed","cSelf"].forEach(id=>$(id).addEventListener("input",renderCond));
+const VIEWS=["today","scan","library","settings"];
+function route(){const h=location.hash.slice(1),r=VIEWS.includes(h)?h:"today";VIEWS.forEach(x=>$("v-"+x).hidden=x!==r);document.querySelectorAll("nav a").forEach(a=>a.setAttribute("aria-current",a.getAttribute("href")==="#"+r?"page":"false"));stopAudio();window.scrollTo(0,0)}
+window.addEventListener("hashchange",route);
+setDev(!!LS.get("dev",false));setSky(cond.sky);loadKeys();renderCond();renderLib();route();renderToday();renderScan();
+if(LS.get("locOK",false)&&navigator.permissions&&navigator.permissions.query)navigator.permissions.query({name:"geolocation"}).then(p=>{if(p.state==="granted")readLocation(false)}).catch(()=>{});
+if("serviceWorker" in navigator&&location.protocol==="https:")navigator.serviceWorker.register("sw.js").catch(()=>{});
+})();
+</script>
+</body>
+</html>

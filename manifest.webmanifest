@@ -1,0 +1,15 @@
+{
+  "name": "Novice Code",
+  "short_name": "Novice Code",
+  "description": "Read the day into a five-color creative code, with references for fits, sound, video, and art.",
+  "start_url": "./#today",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#BFA982",
+  "theme_color": "#BFA982",
+  "icons": [
+    {"src": "icon-192.png", "sizes": "192x192", "type": "image/png"},
+    {"src": "icon-512.png", "sizes": "512x512", "type": "image/png"},
+    {"src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}
+  ]
+}
